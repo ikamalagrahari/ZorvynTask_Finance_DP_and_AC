@@ -8,9 +8,11 @@ dotenv.config();
 
 // Connect to database
 connectDB().then(async () => {
-    // Run seeder automatically if in-memory database since it starts empty
-    const seedDatabase = require('./utils/seed');
-    await seedDatabase();
+    // Only run seeder automatically if NOT in production (Serverless Vercel)
+    if (process.env.NODE_ENV !== 'production') {
+        const seedDatabase = require('./utils/seed');
+        await seedDatabase();
+    }
 });
 
 const app = express();
