@@ -171,7 +171,6 @@ async function handleAuth(e) {
 
     if (authMode === 'register') {
         payload.name = document.getElementById('name').value;
-        payload.role = document.getElementById('role').value;
         endpoint = `/auth/register`;
     }
 

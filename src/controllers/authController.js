@@ -10,8 +10,7 @@ const generateToken = (id) => {
 const registerJoiSchema = Joi.object({
     name: Joi.string().required(),
     email: Joi.string().email().required(),
-    password: Joi.string().min(6).required(),
-    role: Joi.string().valid('viewer', 'analyst', 'admin').default('viewer')
+    password: Joi.string().min(6).required()
 });
 
 const loginJoiSchema = Joi.object({
@@ -24,7 +23,7 @@ exports.register = async (req, res) => {
         const { error } = registerJoiSchema.validate(req.body);
         if (error) return res.status(400).json({ message: error.details[0].message });
 
-        const { name, email, password, role } = req.body;
+        const { name, email, password } = req.body;
 
         const userExists = await User.findOne({ email });
         if (userExists) {
@@ -38,7 +37,7 @@ exports.register = async (req, res) => {
             name,
             email,
             password: hashedPassword,
-            role: role || 'viewer'
+            role: 'viewer' // Forced
         });
 
         if (user) {

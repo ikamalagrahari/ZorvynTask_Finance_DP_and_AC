@@ -59,10 +59,20 @@ You can log in to the frontend utilizing these automatically created Dummy Accou
 
 ## 🔐 Role-Based Access Control (RBAC)
 
-This API relies on a tiered role system:
+This API relies on a strict, security-first tiered role system:
 - **`viewer`**: Can view records but cannot modify them or access dashboards.
 - **`analyst`**: Can view records and has full access to dashboard aggregate APIs.
 - **`admin`**: Has full CRUD capability on records and can manage users.
+
+### Secure Registration Flow & Managing Roles
+For architectural security, the public registration endpoint (`POST /api/auth/register`) strictly sets all new accounts to the `viewer` role, ignoring any unauthorized role requests in the payload. 
+
+**How to add an Analyst or Admin?**
+1. Have the user create an account normally (they will default to `viewer`).
+2. Log into the platform using an existing **Admin** account.
+3. Navigate to the **Users** master panel to view the database.
+4. Click **Manage** on the new user's profile and elevate their account to `analyst` or `admin`. 
+This triggers the `PATCH /api/users/:id` endpoint and instantly grants them their new privileges securely!
 
 *Assumption:* Only admins can create financial records for simplicity to maintain clear audit trails of data entry.
 
